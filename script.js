@@ -79,6 +79,41 @@
   });
 
   cw3.addEventListener("click", function () {
-    //TODO
+    answer.innerHTML = "Loading...";
+
+    fetch("https://6aea48ee3d3dd3d37be65797.mockapi.io/api/paw/users")
+      .then((response) => response.json())
+      .then((users) => {
+        let tableHTML = `
+          <table style="width: 100%; text-align: center; border-collapse: collapse;">
+            <thead>
+              <tr>
+                <th style="border: 1px solid #ccc; padding: 8px;">ID</th>
+                <th style="border: 1px solid #ccc; padding: 8px;">Imię i nazwisko</th>
+                <th style="border: 1px solid #ccc; padding: 8px;">Kraj</th>
+                <th style="border: 1px solid #ccc; padding: 8px;">Data urodzenia</th>
+              </tr>
+            </thead>
+            <tbody>
+        `;
+
+        users.forEach((user) => {
+          tableHTML += `
+            <tr>
+              <td style="border: 1px solid #ccc; padding: 8px;">${user.id}</td>
+              <td style="border: 1px solid #ccc; padding: 8px;">${user.name}</td>
+              <td style="border: 1px solid #ccc; padding: 8px;">${user.country}</td>
+              <td style="border: 1px solid #ccc; padding: 8px;">${user.birthdate}</td>
+            </tr>
+          `;
+        });
+
+        tableHTML += `
+            </tbody>
+          </table>
+        `;
+
+        answer.innerHTML = tableHTML;
+      });
   });
 })();
