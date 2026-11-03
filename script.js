@@ -81,29 +81,37 @@
   cw3.addEventListener("click", function () {
     answer.innerHTML = "Loading...";
 
-    fetch("https://6aea48ee3d3dd3d37be65797.mockapi.io/api/paw/users")
+    fetch("db.json")
       .then((response) => response.json())
-      .then((users) => {
+      .then((data) => {
         let tableHTML = `
-          <table style="width: 100%; text-align: center; border-collapse: collapse;">
+          <table style="width: 100%; text-align: left; border-collapse: collapse;">
             <thead>
               <tr>
-                <th style="border: 1px solid #ccc; padding: 8px;">ID</th>
-                <th style="border: 1px solid #ccc; padding: 8px;">Imię i nazwisko</th>
-                <th style="border: 1px solid #ccc; padding: 8px;">Kraj</th>
-                <th style="border: 1px solid #ccc; padding: 8px;">Data urodzenia</th>
+                <th style="border: 1px solid #ccc; padding: 8px;">Post</th>
+                <th style="border: 1px solid #ccc; padding: 8px;">Komentarze</th>
               </tr>
             </thead>
             <tbody>
         `;
 
-        users.forEach((user) => {
+        data.posts.forEach((post) => {
+          let commentsList = "<ul>";
+          data.comments.forEach((comment) => {
+            if (comment.postId === post.id) {
+              commentsList += `<li>${comment.body}</li>`;
+            }
+          });
+          commentsList += "</ul>";
+
           tableHTML += `
             <tr>
-              <td style="border: 1px solid #ccc; padding: 8px;">${user.id}</td>
-              <td style="border: 1px solid #ccc; padding: 8px;">${user.name}</td>
-              <td style="border: 1px solid #ccc; padding: 8px;">${user.country}</td>
-              <td style="border: 1px solid #ccc; padding: 8px;">${user.birthdate}</td>
+              <td style="border: 1px solid #ccc; padding: 8px;">
+                <strong>${post.title}</strong>
+              </td>
+              <td style="border: 1px solid #ccc; padding: 8px;">
+                ${commentsList}
+              </td>
             </tr>
           `;
         });
